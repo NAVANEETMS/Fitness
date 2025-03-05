@@ -7,10 +7,15 @@ const { Pool } = require("pg");
 dotenv.config();
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
+
+// Set EJS as the templating engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views")); // Ensure your .ejs files are inside a 'views' folder
+app.use(express.static(path.join(__dirname, "public"))); // For static assets like CSS/JS
 
 // PostgreSQL Connection
 const pool = new Pool({
@@ -23,19 +28,23 @@ const pool = new Pool({
 
 // Routes
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+    res.render("index.ejs",{a:"Sign in",b:"/signin"}); // Render the EJS file, not sendFile
 });
 
 app.get("/signin", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "signin.html"));
+    res.render("signin.ejs");
 });
 
 app.get("/register", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "register.html"));
+    res.render("register.ejs");
+});
+app.get("/join", (req, res) => {
+    res.render("join.ejs");
 });
 
+// Register User
 app.post("/register", async (req, res) => {
-  console.log("Received Request Body:", req.body); // Debugging line
+  console.log("Received Request Body:", req.body);
 
   const { email, password } = req.body;
 
@@ -53,14 +62,12 @@ app.post("/register", async (req, res) => {
       await pool.query("INSERT INTO users (email, password) VALUES ($1, $2)", [email, password]);
       console.log("New User Registered:", { email });
 
-      res.redirect("/");
+      res.render("index.ejs",{a:"Join now",b:"/join"});
   } catch (error) {
       console.error("Error registering user:", error);
       res.status(500).send("Server error.");
   }
 });
-
-
 
 // Login User
 app.post("/login", async (req, res) => {
@@ -74,7 +81,7 @@ app.post("/login", async (req, res) => {
         }
 
         console.log("User Logged In:", { email });
-        res.redirect("/");
+        res.render("index.ejs",{a:"Join now",b:"/join"});
     } catch (error) {
         console.error("Error logging in user:", error);
         res.status(500).send("Server error.");
