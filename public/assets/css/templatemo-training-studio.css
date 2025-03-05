@@ -44,6 +44,16 @@ figure, header, nav, section, article, aside, footer, figcaption {
   outline: 0;
 }
 
+
+
+.program1 div{
+  float:left;
+  width:50%;
+  text-align: center;
+  background-color: rgb(253, 253, 253);
+}
+
+
 .clearfix:after {
   content: ".";
   display: block;
@@ -143,6 +153,13 @@ body {
   .mobile-bottom-fix-big {
     margin-bottom: 60px;
   }
+}
+
+
+.contactme {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .section-heading {
@@ -1002,10 +1019,24 @@ contact
 
 #contact-us {
   margin-top: 140px;
+  /* Add padding to the top and bottom 
+  padding-top: 80px;
+  padding-bottom: 80px;
+  */
+  padding-left: 30%;
+}
+
+#contactbanner {
+  padding: 0px 0px 0px 0px;
+  background-image: url(../images/schedule-bg.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #contact-us .container-fluid .col-lg-6 {
-  padding: 0px;
+  display: grid;
+  grid-template-rows: auto;
 }
 
 #contact-us .contact-form {
@@ -1222,6 +1253,7 @@ responsive
   }
   #features .feature-item {
     margin-bottom: 30px;
+    
   }
   #our-classes .tabs-content {
     margin-left: 0px;
